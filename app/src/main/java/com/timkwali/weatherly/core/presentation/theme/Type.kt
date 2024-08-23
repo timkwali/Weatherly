@@ -1,4 +1,4 @@
-package com.timkwali.weatherly.ui.theme
+package com.timkwali.weatherly.core.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

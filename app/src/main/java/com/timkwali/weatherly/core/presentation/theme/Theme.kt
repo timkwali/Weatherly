@@ -1,4 +1,4 @@
-package com.timkwali.weatherly.ui.theme
+package com.timkwali.weatherly.core.presentation.theme
 
 import android.app.Activity
 import android.os.Build
