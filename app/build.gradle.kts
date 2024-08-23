@@ -87,6 +87,12 @@ dependencies {
 
     //Interceptor
     implementation(libs.logging.interceptor)
+
+    //Constraint layout
+    implementation(libs.androidx.constraintlayout.compose)
+
+    //Coil
+    implementation(libs.coil.compose)
 }
 
 kapt {

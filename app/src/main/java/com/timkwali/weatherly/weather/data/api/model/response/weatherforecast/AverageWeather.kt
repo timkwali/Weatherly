@@ -5,31 +5,23 @@ import com.google.gson.annotations.SerializedName
 
 data class AverageWeather(
     @SerializedName("clouds")
-    val clouds: Int?,
-    @SerializedName("deg")
-    val deg: Int?,
+    val clouds: Clouds?,
     @SerializedName("dt")
     val dt: Long?,
-    @SerializedName("feels_like")
-    val feelsLike: FeelsLike?,
-    @SerializedName("gust")
-    val gust: Double?,
-    @SerializedName("humidity")
-    val humidity: Int?,
+    @SerializedName("dt_txt")
+    val dtTxt: String?,
+    @SerializedName("main")
+    val main: Main?,
     @SerializedName("pop")
     val pop: Double?,
-    @SerializedName("pressure")
-    val pressure: Int?,
     @SerializedName("rain")
-    val rain: Double?,
-    @SerializedName("speed")
-    val speed: Double?,
-    @SerializedName("sunrise")
-    val sunrise: Int?,
-    @SerializedName("sunset")
-    val sunset: Int?,
-    @SerializedName("temp")
-    val temp: Temp?,
+    val rain: Rain?,
+    @SerializedName("sys")
+    val sys: Sys?,
+    @SerializedName("visibility")
+    val visibility: Int?,
     @SerializedName("weather")
-    val weather: List<Weather?>?
+    val weather: List<Weather?>?,
+    @SerializedName("wind")
+    val wind: Wind?
 )

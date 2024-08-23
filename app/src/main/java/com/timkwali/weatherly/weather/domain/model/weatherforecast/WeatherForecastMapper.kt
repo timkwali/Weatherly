@@ -10,9 +10,9 @@ class WeatherForecastMapper: DomainMapper<AverageWeather, WeatherForecastState> 
     override suspend fun mapToDomain(entity: AverageWeather): WeatherForecastState {
         return WeatherForecastState(
             date = getDayOfWeekFromDate(entity.dt ?: 0),
-            humidity = "${entity.humidity ?: "Unknown"}",
-            minimumTemperature = "${entity.temp?.min ?: "Unknown"}",
-            maximumTemperature = "${entity.temp?.max ?: "Unknown"}",
+            humidity = "${entity.main?.humidity ?: ""}",
+            minimumTemperature = "${entity.main?.tempMin?.toInt() ?: ""}",
+            maximumTemperature = "${entity.main?.tempMax?.toInt() ?: ""}",
             mainWeather = entity.weather?.get(0)?.main ?: "",
             weatherIcon = "https://openweathermap.org/img/wn/${entity.weather?.get(0)?.icon ?: "01d"}@2x.png"
         )

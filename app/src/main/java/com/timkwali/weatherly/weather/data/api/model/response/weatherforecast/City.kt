@@ -14,6 +14,10 @@ data class City(
     val name: String?,
     @SerializedName("population")
     val population: Int?,
+    @SerializedName("sunrise")
+    val sunrise: Int?,
+    @SerializedName("sunset")
+    val sunset: Int?,
     @SerializedName("timezone")
     val timezone: Int?
 )

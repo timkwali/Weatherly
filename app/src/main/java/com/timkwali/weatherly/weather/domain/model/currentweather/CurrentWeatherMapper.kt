@@ -7,8 +7,8 @@ class CurrentWeatherMapper: DomainMapper<CurrentWeatherResponse, CurrentWeatherS
     override suspend fun mapToDomain(entity: CurrentWeatherResponse): CurrentWeatherState {
         return CurrentWeatherState(
             locationName = entity.name ?: "",
-            mainWeather = entity.weather?.get(0)?.main ?: "",
-            temperature = "${entity.main?.temp ?: "Unknown"}",
+            feelsLike = "${entity.main?.feelsLike?.toInt() ?: ""}",
+            temperature = "${entity.main?.temp?.toInt() ?: "Unknown"}",
             humidity = "${entity.main?.humidity ?: "Unknown"}",
             windSpeed = "${entity.wind?.speed ?: "Unknown"}",
             weatherDescription = entity.weather?.get(0)?.description ?: "",

@@ -2,7 +2,6 @@ package com.timkwali.weatherly.weather.data.api
 
 import com.timkwali.weatherly.core.utils.Constants.API_KEY
 import com.timkwali.weatherly.core.utils.Constants.CURRENT_WEATHER_ENDPOINT
-import com.timkwali.weatherly.core.utils.Constants.DEFAULT_FORECAST_DAY_COUNT
 import com.timkwali.weatherly.core.utils.Constants.DEFAULT_LOCATION_SEARCH_LIMIT
 import com.timkwali.weatherly.core.utils.Constants.LOCATION_SEARCH_ENDPOINT
 import com.timkwali.weatherly.core.utils.Constants.WEATHER_FORECAST_ENDPOINT
@@ -24,7 +23,6 @@ interface WeatherApi {
     suspend fun getWeatherForecast(
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
-        @Query("cnt") dayCount: String = DEFAULT_FORECAST_DAY_COUNT,
         @Query("appid") apiKey: String = API_KEY
     ): WeatherForecastResponse
 

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Weatherly</string>
+
+    <string name="degrees">\u00B0</string>
+    <string name="search_city">Search City</string>
+    <string name="click_to_search">Click Button to search a city</string>
+    <string name="search">Search</string>
+    <string name="feels_like">Feels like</string>
+    <string name="no_location_results">There are no results for the search query. Please try another one.</string>
 </resources>

@@ -8,6 +8,7 @@ import com.timkwali.weatherly.core.utils.exceptions.handleException
 import com.timkwali.weatherly.weather.domain.model.currentweather.CurrentWeatherMapper
 import com.timkwali.weatherly.weather.domain.model.currentweather.CurrentWeatherState
 import com.timkwali.weatherly.weather.domain.repository.WeatherRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEmpty
 import javax.inject.Inject
@@ -24,6 +25,7 @@ class GetCurrentWeather @Inject constructor(
             if(!networkManager.isConnected()) {
                 emit(Resource.Error(NetworkConnectionException().message))
             }
+            emit(Resource.Loading())
             weatherRepository.getCurrentWeather(latitude, longitude)
                 .onEmpty { emit(Resource.Error(GeneralException().message)) }
                 .collect { response ->
