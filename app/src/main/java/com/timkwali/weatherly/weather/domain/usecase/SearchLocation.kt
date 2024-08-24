@@ -1,5 +1,6 @@
 package com.timkwali.weatherly.weather.domain.usecase
 
+import android.util.Log
 import com.timkwali.weatherly.core.utils.NetworkManager
 import com.timkwali.weatherly.core.utils.Resource
 import com.timkwali.weatherly.core.utils.exceptions.EmptyResultException
@@ -29,6 +30,7 @@ class SearchLocation @Inject constructor(
                 return@flow
             }
             emit(Resource.Loading())
+            delay(3000)
             weatherRepository.searchLocations(searchQuery)
                 .onEmpty { emit(Resource.Error(GeneralException().message)) }
                 .collect { response ->

@@ -36,18 +36,12 @@ class WeatherViewModel @Inject constructor(
     private var _searchLocationState: MutableStateFlow<Resource<List<LocationState>>?> = MutableStateFlow(null)
     val searchLocationState: StateFlow<Resource<List<LocationState>>?> get() = _searchLocationState.asStateFlow()
 
-    private var _errorState: MutableSharedFlow<String?> = MutableSharedFlow()
-    val errorState: SharedFlow<String?> get() = _errorState
-
     fun getCurrentWeather(
         latitude: String,
         longitude: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         getCurrentWeather.invoke(latitude, longitude).collect { currentWeatherState ->
             _currentWeatherState.value = currentWeatherState
-//            if(currentWeatherState is Resource.Error) {
-//                _errorState.emit(currentWeatherState.message)
-//            } else _errorState.emit(null)
         }
     }
 
@@ -57,18 +51,12 @@ class WeatherViewModel @Inject constructor(
     ) = viewModelScope.launch(Dispatchers.IO) {
         getWeatherForecast.invoke(latitude, longitude).collect { weatherForecast ->
             _weatherForecastState.value = weatherForecast
-//            if(weatherForecast is Resource.Error) {
-//                _errorState.emit(weatherForecast.message)
-//            } else _errorState.emit(null)
         }
     }
 
     fun searchLocations(searchQuery: String) = viewModelScope.launch(Dispatchers.IO) {
         searchLocation.invoke(searchQuery).collect { locations ->
             _searchLocationState.value = locations
-//            if(locations is Resource.Error) {
-//                _errorState.emit(locations.message)
-//            } else _errorState.emit(null)
         }
     }
 }

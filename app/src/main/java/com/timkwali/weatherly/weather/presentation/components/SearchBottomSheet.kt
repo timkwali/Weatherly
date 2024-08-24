@@ -1,13 +1,10 @@
 package com.timkwali.weatherly.weather.presentation.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -29,17 +26,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.timkwali.weatherly.R
-import com.timkwali.weatherly.core.presentation.components.text.BodyText
 import com.timkwali.weatherly.core.presentation.theme.WeatherlyBlue
 import com.timkwali.weatherly.core.presentation.theme.WeatherlyDeepBlue
 import com.timkwali.weatherly.weather.domain.model.searchlocation.LocationState
@@ -59,6 +59,7 @@ fun SearchBottomSheet(
 ) {
     val controller = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
 
     ModalBottomSheet(
         sheetState =  sheetState,
@@ -67,66 +68,71 @@ fun SearchBottomSheet(
             .heightIn(400.dp)
             .fillMaxWidth(),
     ) {
-        Box(
+        LaunchedEffect(key1 = "") {
+            focusRequester.requestFocus()
+        }
+
+        Column(
             modifier = modifier
                 .padding(all = 20.dp)
                 .fillMaxWidth(),
-            contentAlignment = Alignment.Center
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                TextField(
-                    value = searchQuery,
-                    onValueChange = { onSearchChange(it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .border(
-                            width = 2.dp,
-                            color = WeatherlyBlue,
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .background(Color.Transparent),
-                    trailingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = "search icon", tint = Color.Gray) },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        cursorColor = WeatherlyBlue,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedTextColor = WeatherlyDeepBlue
-                    ),
-                    placeholder = { Text(text = stringResource(id = R.string.search_city), style = typography.bodyMedium, color = Color.Gray) },
-                    maxLines = 1,
-                    keyboardActions = KeyboardActions(
-                        onSearch = {
-                            controller?.hide()
-                            focusManager.clearFocus()
-                            searchCity(searchQuery)
-                        },
-                    ),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                )
+            TextField(
+                value = searchQuery,
+                onValueChange = { onSearchChange(it) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .border(
+                        width = 2.dp,
+                        color = WeatherlyBlue,
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .background(Color.Transparent)
+                    .focusRequester(focusRequester),
+                trailingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = "search icon", tint = Color.Gray) },
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    cursorColor = WeatherlyBlue,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    focusedTextColor = WeatherlyDeepBlue
+                ),
+                placeholder = { Text(text = stringResource(id = R.string.search_city), style = typography.bodyMedium, color = Color.Gray) },
+                maxLines = 1,
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        controller?.hide()
+                        focusManager.clearFocus()
+                        searchCity(searchQuery)
+                    },
+                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            )
 
-                Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-                if(!isLoading && locations != null) {
-                    LazyColumn {
-                        itemsIndexed(locations) { index, item ->
-                            Spacer(modifier = Modifier.height(10.dp))
-                            LocationItem(location = item) {
-                                onLocationClick(item.latitude, item.longitude)
-                                onDismiss()
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                        }
-                    }
+            if(isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = WeatherlyBlue)
                 }
             }
 
-            if(isLoading) {
-                CircularProgressIndicator(color = WeatherlyBlue)
+            if(!isLoading && locations != null) {
+                LazyColumn {
+                    itemsIndexed(locations) { index, item ->
+                        Spacer(modifier = Modifier.height(10.dp))
+                        LocationItem(location = item) {
+                            onLocationClick(item.latitude, item.longitude)
+                            onDismiss()
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
             }
         }
     }

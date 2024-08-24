@@ -10,6 +10,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +44,6 @@ fun WeatherScreen() {
     val currentWeather = weatherViewModel.currentWeatherState.collectAsState()
     val weatherForecast = weatherViewModel.weatherForecastState.collectAsState()
     val locations = weatherViewModel.searchLocationState.collectAsState()
-    val errorState = weatherViewModel.errorState.collectAsState(initial = null)
 
     var isSheetVisible by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable{ mutableStateOf("") }
@@ -52,7 +52,7 @@ fun WeatherScreen() {
         currentWeather = currentWeather.value?.data,
         weatherForecast = weatherForecast.value?.data,
         isLoading = currentWeather.value is Resource.Loading<*> || weatherForecast.value is Resource.Loading,
-        error = errorState.value,
+        error = currentWeather.value?.message ?: weatherForecast.value?.message ?: locations.value?.message,
         showInitialSearch = currentWeather.value?.data == null && currentWeather.value !is Resource.Loading<*>,
         onSearchClick = { isSheetVisible = true },
         modifier = Modifier.fillMaxSize()
@@ -92,6 +92,12 @@ fun WeatherContent(
             .paint(painterResource(id = R.drawable.ic_background), contentScale = ContentScale.FillBounds),
         contentAlignment = Alignment.Center
     ) {
+        val context = LocalContext.current
+
+        LaunchedEffect(key1 = error) {
+            error?.let { Toast.makeText(context, error, Toast.LENGTH_SHORT).show() }
+        }
+
         if(showInitialSearch) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BodyText(text = stringResource(id = R.string.click_to_search))
@@ -119,13 +125,8 @@ fun WeatherContent(
                     )
             }
         }
-
         if(isLoading) {
             CircularProgressIndicator(color = Color.White)
-        }
-
-        if(error != null) {
-            Toast.makeText(LocalContext.current, error, Toast.LENGTH_SHORT).show()
         }
     }
 }
