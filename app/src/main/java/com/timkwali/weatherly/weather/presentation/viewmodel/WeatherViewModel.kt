@@ -29,11 +29,11 @@ class WeatherViewModel @Inject constructor(
 
     private var currentCoordinates = Coordinates(latitude = "", longitude = "")
 
-    private var _currentWeatherState: MutableStateFlow<Resource<out CurrentWeatherState>?> = MutableStateFlow(null)
-    val currentWeatherState: StateFlow<Resource<out CurrentWeatherState>?> get() = _currentWeatherState.asStateFlow()
+    private var _currentWeatherState: MutableStateFlow<Resource<CurrentWeatherState>?> = MutableStateFlow(null)
+    val currentWeatherState: StateFlow<Resource<CurrentWeatherState>?> get() = _currentWeatherState.asStateFlow()
 
-    private var _weatherForecastState: MutableStateFlow<Resource<out List<WeatherForecastState>>?> = MutableStateFlow(null)
-    val weatherForecastState: StateFlow<Resource<out List<WeatherForecastState>>?> get() = _weatherForecastState.asStateFlow()
+    private var _weatherForecastState: MutableStateFlow<Resource<List<WeatherForecastState>>?> = MutableStateFlow(null)
+    val weatherForecastState: StateFlow<Resource<List<WeatherForecastState>>?> get() = _weatherForecastState.asStateFlow()
 
     private var _searchLocationState: MutableStateFlow<Resource<List<LocationState>>?> = MutableStateFlow(null)
     val searchLocationState: StateFlow<Resource<List<LocationState>>?> get() = _searchLocationState.asStateFlow()
@@ -52,27 +52,28 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getCurrentWeather() = viewModelScope.launch(Dispatchers.IO) {
-        getCurrentWeather.invoke(currentCoordinates.latitude, currentCoordinates.longitude).collect { currentWeatherState ->
-            setError(currentWeatherState.message)
-            _currentWeatherState.value = currentWeatherState
+        getCurrentWeather.invoke(currentCoordinates.latitude, currentCoordinates.longitude).collect { currentWeather ->
+            setError(currentWeather)
+            _currentWeatherState.value = currentWeather
         }
     }
 
     fun getWeatherForecast() = viewModelScope.launch(Dispatchers.IO) {
         getWeatherForecast.invoke(currentCoordinates.latitude, currentCoordinates.longitude).collect { weatherForecast ->
-            setError(weatherForecast.message)
+            setError(weatherForecast)
             _weatherForecastState.value = weatherForecast
         }
     }
 
     fun searchLocations(searchQuery: String) = viewModelScope.launch(Dispatchers.IO) {
         searchLocation.invoke(searchQuery).collect { locations ->
-            setError(locations.message)
+            setError(locations)
             _searchLocationState.value = locations
         }
     }
 
-    private suspend fun setError(message: String?) {
+    private suspend fun setError(resource: Resource<*>) {
+        val message = if(resource is Resource.Error) resource.message else null
         _errorMessage.emit(message)
     }
 }

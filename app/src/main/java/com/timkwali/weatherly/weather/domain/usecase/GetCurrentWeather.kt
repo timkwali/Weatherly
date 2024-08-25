@@ -23,7 +23,7 @@ class GetCurrentWeather @Inject constructor(
     suspend operator fun invoke(
         latitude: String,
         longitude: String
-    ): Flow<Resource<out CurrentWeatherState>> = networkBoundResource(
+    ): Flow<Resource<CurrentWeatherState>> = networkBoundResource(
         isNetworkConnected = networkManager.isConnected(),
         query = {
             weatherRepository.getDbCurrentWeather()

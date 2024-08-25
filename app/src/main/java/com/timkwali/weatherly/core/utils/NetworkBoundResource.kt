@@ -29,8 +29,6 @@ inline fun <ResultType, RequestType> networkBoundResource(
             }
         } catch (e: Exception) {
             query().map { Resource.Error(e.handleException().message, it) }
-        } catch (throwable: Throwable) {
-            query().map { Resource.Error(throwable.localizedMessage, it) }
         }
     } else {
         query().map { Resource.Success(it) }

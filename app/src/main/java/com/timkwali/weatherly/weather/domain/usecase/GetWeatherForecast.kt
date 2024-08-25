@@ -1,6 +1,5 @@
 package com.timkwali.weatherly.weather.domain.usecase
 
-import android.util.Log
 import com.timkwali.weatherly.core.utils.NetworkManager
 import com.timkwali.weatherly.core.utils.Resource
 import com.timkwali.weatherly.core.utils.networkBoundResource
@@ -17,7 +16,7 @@ class GetWeatherForecast @Inject constructor(
     suspend operator fun invoke(
         latitude: String,
         longitude: String
-    ): Flow<Resource<out List<WeatherForecastState>>> = networkBoundResource(
+    ): Flow<Resource<List<WeatherForecastState>>> = networkBoundResource(
         isNetworkConnected = networkManager.isConnected(),
         query = {
             weatherRepository.getDbWeatherForecast()
