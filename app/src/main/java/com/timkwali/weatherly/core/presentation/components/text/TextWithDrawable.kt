@@ -3,6 +3,7 @@ package com.timkwali.weatherly.core.presentation.components.text
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,8 +23,8 @@ fun TextWithDrawable(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = 20.sp,
     fontWeight: FontWeight = FontWeight.Bold,
-    color: Color = Color.White,
-    iconTint: Color = Color.White,
+    color: Color = MaterialTheme.colorScheme.secondary,
+    iconTint: Color = MaterialTheme.colorScheme.secondary,
     iconSize: Dp = 40.dp,
     drawableStart: Int? = null,
     drawableEnd: Int? = null,

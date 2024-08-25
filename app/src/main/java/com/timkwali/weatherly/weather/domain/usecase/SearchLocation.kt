@@ -1,20 +1,16 @@
 package com.timkwali.weatherly.weather.domain.usecase
 
-import android.util.Log
 import com.timkwali.weatherly.core.utils.NetworkManager
 import com.timkwali.weatherly.core.utils.Resource
 import com.timkwali.weatherly.core.utils.exceptions.EmptyResultException
 import com.timkwali.weatherly.core.utils.exceptions.GeneralException
-import com.timkwali.weatherly.core.utils.exceptions.NetworkConnectionException
 import com.timkwali.weatherly.core.utils.exceptions.handleException
-import com.timkwali.weatherly.weather.domain.model.currentweather.CurrentWeatherMapper
-import com.timkwali.weatherly.weather.domain.model.currentweather.CurrentWeatherState
 import com.timkwali.weatherly.weather.domain.model.searchlocation.LocationMapper
 import com.timkwali.weatherly.weather.domain.model.searchlocation.LocationState
 import com.timkwali.weatherly.weather.domain.repository.WeatherRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEmpty
+import java.net.ConnectException
 import javax.inject.Inject
 
 class SearchLocation @Inject constructor(
@@ -26,11 +22,9 @@ class SearchLocation @Inject constructor(
     ) = flow<Resource<List<LocationState>>> {
         try {
             if(!networkManager.isConnected()) {
-                emit(Resource.Error(NetworkConnectionException().message))
-                return@flow
+                throw ConnectException()
             }
             emit(Resource.Loading())
-            delay(3000)
             weatherRepository.searchLocations(searchQuery)
                 .onEmpty { emit(Resource.Error(GeneralException().message)) }
                 .collect { response ->

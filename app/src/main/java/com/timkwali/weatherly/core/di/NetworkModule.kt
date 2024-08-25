@@ -1,6 +1,7 @@
 package com.timkwali.weatherly.core.di
 
 import android.app.Application
+import com.timkwali.weatherly.core.data.local.db.WeatherDatabase
 import com.timkwali.weatherly.core.utils.Constants.API_KEY
 import com.timkwali.weatherly.core.utils.Constants.BASE_URL
 import com.timkwali.weatherly.core.utils.NetworkManager
@@ -74,8 +75,9 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideWeatherRepository(
-        weatherApi: WeatherApi
+        weatherApi: WeatherApi,
+        weatherDatabase: WeatherDatabase
     ): WeatherRepository {
-        return WeatherRepositoryImpl(weatherApi)
+        return WeatherRepositoryImpl(weatherApi, weatherDatabase)
     }
 }

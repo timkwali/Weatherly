@@ -15,7 +15,7 @@ fun BodyText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit = 20.sp,
-    color: Color = Color.White,
+    color: Color = MaterialTheme.colorScheme.secondary,
     fontWeight: FontWeight = FontWeight.Bold
 ) {
     Text(

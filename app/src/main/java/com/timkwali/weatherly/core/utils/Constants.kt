@@ -10,4 +10,8 @@ object Constants {
     const val WEATHER_FORECAST_ENDPOINT = "data/2.5/forecast"
     const val LOCATION_SEARCH_ENDPOINT = "geo/1.0/direct"
 
+    const val WEATHER_DATABASE = "weather_database"
+    const val CURRENT_WEATHER_TABLE = "current_weather_table"
+    const val WEATHER_FORECAST_TABLE = "weather_forecast_table"
+
 }

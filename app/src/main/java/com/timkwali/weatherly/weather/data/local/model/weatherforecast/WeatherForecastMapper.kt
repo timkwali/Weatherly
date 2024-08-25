@@ -1,4 +1,4 @@
-package com.timkwali.weatherly.weather.domain.model.weatherforecast
+package com.timkwali.weatherly.weather.data.local.model.weatherforecast
 
 import com.timkwali.weatherly.core.utils.DomainMapper
 import com.timkwali.weatherly.weather.data.api.model.response.weatherforecast.AverageWeather
@@ -13,7 +13,6 @@ class WeatherForecastMapper: DomainMapper<AverageWeather, WeatherForecastState> 
             humidity = "${entity.main?.humidity ?: ""}",
             minimumTemperature = "${entity.main?.tempMin?.toInt() ?: ""}",
             maximumTemperature = "${entity.main?.tempMax?.toInt() ?: ""}",
-            mainWeather = entity.weather?.get(0)?.main ?: "",
             weatherIcon = "https://openweathermap.org/img/wn/${entity.weather?.get(0)?.icon ?: "01d"}@2x.png"
         )
     }

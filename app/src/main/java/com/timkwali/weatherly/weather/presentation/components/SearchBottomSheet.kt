@@ -16,9 +16,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -28,7 +30,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -58,8 +59,10 @@ fun SearchBottomSheet(
     modifier: Modifier = Modifier,
 ) {
     val controller = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        controller?.show()
+    }
 
     ModalBottomSheet(
         sheetState =  sheetState,
@@ -67,11 +70,8 @@ fun SearchBottomSheet(
         modifier = modifier
             .heightIn(400.dp)
             .fillMaxWidth(),
+        containerColor = MaterialTheme.colorScheme.secondary,
     ) {
-        LaunchedEffect(key1 = "") {
-            focusRequester.requestFocus()
-        }
-
         Column(
             modifier = modifier
                 .padding(all = 20.dp)
@@ -88,23 +88,21 @@ fun SearchBottomSheet(
                         color = WeatherlyBlue,
                         shape = RoundedCornerShape(20.dp)
                     )
-                    .background(Color.Transparent)
-                    .focusRequester(focusRequester),
-                trailingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = "search icon", tint = Color.Gray) },
+                    .background(Color.Transparent),
+                trailingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = "search icon", tint = MaterialTheme.colorScheme.onSecondary) },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
-                    cursorColor = WeatherlyBlue,
+                    cursorColor = MaterialTheme.colorScheme.primary,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
-                    focusedTextColor = WeatherlyDeepBlue
+                    focusedTextColor = MaterialTheme.colorScheme.onSecondary
                 ),
-                placeholder = { Text(text = stringResource(id = R.string.search_city), style = typography.bodyMedium, color = Color.Gray) },
+                placeholder = { Text(text = stringResource(id = R.string.search_city), style = typography.bodyMedium, color = MaterialTheme.colorScheme.surface) },
                 maxLines = 1,
                 keyboardActions = KeyboardActions(
                     onSearch = {
                         controller?.hide()
-                        focusManager.clearFocus()
                         searchCity(searchQuery)
                     },
                 ),
@@ -118,7 +116,7 @@ fun SearchBottomSheet(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = WeatherlyBlue)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             }
 

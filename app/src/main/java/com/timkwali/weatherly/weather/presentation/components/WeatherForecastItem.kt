@@ -18,7 +18,7 @@ import com.timkwali.weatherly.R
 import com.timkwali.weatherly.core.presentation.components.image.ImageFromUrl
 import com.timkwali.weatherly.core.presentation.components.text.BodyText
 import com.timkwali.weatherly.core.presentation.components.text.TextWithDrawable
-import com.timkwali.weatherly.weather.domain.model.weatherforecast.WeatherForecastState
+import com.timkwali.weatherly.weather.data.local.model.weatherforecast.WeatherForecastState
 
 @Composable
 fun WeatherForecastItem(
@@ -68,5 +68,14 @@ fun WeatherForecastItem(
 @Preview
 @Composable
 fun WeatherForecastItemPreview() {
-    WeatherForecastItem(weatherForecastState = WeatherForecastState("Friday", "88", "24", "27", "Rain", "https://openweathermap.org/img/wn/10d@2x.png"),)
+    WeatherForecastItem(
+        weatherForecastState = WeatherForecastState(
+            0,
+            "Friday",
+            "88",
+            "24",
+            "27",
+            "https://openweathermap.org/img/wn/10d@2x.png"
+        )
+    )
 }

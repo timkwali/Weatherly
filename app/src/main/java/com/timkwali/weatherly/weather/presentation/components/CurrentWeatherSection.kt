@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +21,7 @@ import com.timkwali.weatherly.core.presentation.components.image.IconFromDrawabl
 import com.timkwali.weatherly.core.presentation.components.image.ImageFromUrl
 import com.timkwali.weatherly.core.presentation.components.text.BodyText
 import com.timkwali.weatherly.core.presentation.components.text.TextWithDrawable
-import com.timkwali.weatherly.weather.domain.model.currentweather.CurrentWeatherState
+import com.timkwali.weatherly.weather.data.local.model.currentweather.CurrentWeatherState
 
 @Composable
 fun CurrentWeatherSection(
@@ -52,9 +51,7 @@ fun CurrentWeatherSection(
         TextWithDrawable(
             text = currentWeather.locationName,
             fontSize = 25.sp,
-            color = Color.White,
             fontWeight = FontWeight.Bold,
-            iconTint = Color.White,
             iconSize = 25.dp,
             drawableStart = R.drawable.ic_location_on,
             modifier = Modifier
@@ -115,7 +112,7 @@ fun CurrentWeatherSection(
             url = currentWeather.weatherIcon,
             modifier = Modifier
                 .size(150.dp)
-                .circularMotion(20f, 10000)
+                .circularMotion(20f, 8000)
                 .constrainAs(weatherIcon) {
                     start.linkTo(horizontalMiddlePoint)
                     end.linkTo(parent.end)

@@ -1,4 +1,4 @@
-package com.timkwali.weatherly.weather.domain.model.currentweather
+package com.timkwali.weatherly.weather.data.local.model.currentweather
 
 import com.timkwali.weatherly.core.utils.DomainMapper
 import com.timkwali.weatherly.weather.data.api.model.response.currentweather.CurrentWeatherResponse
